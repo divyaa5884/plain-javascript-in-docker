@@ -2,6 +2,17 @@
 JavaScript + HTML to render Hello Page 
 
 
+IMPORTANT NOTES:
+
+    1. The backend endpoint host url can be accessed using "API_URL" property (mentioned in env.js). An example is shown in index.js.
+    2. PLEASE USE THIS PROPERTY ("API_URL") WHEN YOU ARE TRYING TO CALL A BACKEND API. 
+    3. When testing in your local environment, please change API_URL to http://localhost:8080.
+    4. Before committing your solution, ENSURE THAT YOU CHANGE THE API_URL TO 'http://restapi:8080' ELSE YOUR SUBMISSION WILL NOT BE SCORED.
+    5. Also, ensure that env.js must be the first file that must be loaded so that API_URL is accessible in subsequent files.
+    6. Make sure you follow the steps mentioned under "PROJECT START STEPS" and ensure that the steps execute successfully. 
+    7. Make sure you follow the steps mentioned under "DOCKER START STEPS" and ensure that the steps execute successfully. 
+
+
 PROJECT START STEPS:
 
     Pre-requisites:
@@ -11,9 +22,9 @@ PROJECT START STEPS:
     1. To run this application, do the following:
         1.a. Go to the project root directory.
         1.b. Run the following command(s) in the terminal/command line:    
-            - http-server ./ -p <port_number> -a 0.0.0.0
+            - http-server ./ -p 4200 -a 0.0.0.0
     
-    2. Go to http://localhost:<port_number>/ in your browser to view it.
+    2. Go to http://localhost:4200 in your browser to view it.
 
 
 DOCKER START STEPS:
