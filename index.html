@@ -1,11 +1,154 @@
 ﻿<!doctype html>
 <html>
   <head>  
+  	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+  	<link rel="stylesheet" type="text/css" href="style.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
     <script src="env.js"></script>
     <script src="index.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
   </head>
   <body onload="renderDynamicContent()">
-    <h1>Hello World</h1>
-    <div id="dynamic-content"></div>
+    <button type="button" class="btn btn-default" id="add_leads" data-toggle="modal" data-target="#add-lead-modal" onclick="restoreDefaultVal()">Add Lead</button>
+    <div id="leads-table">
+    	<table>
+		  <thead>
+		    <th>NAME</th>
+		    <th>EMAIL</th>
+		    <th>MOBILE NUM</th>
+		    <th>LOCATION TYPE</th>
+		    <th>LOCATION STRING</th>
+		    <th>ACTION</th>
+		  </thead>
+		  <tbody id="leads-table-item"></tbody>    
+		</table>
+    </div>
+    <!-- Modal for adding leads-->
+	<div class="modal fade" id="add-lead-modal" role="dialog">
+	 <div class="modal-dialog">
+	  <div class="modal-content">
+	    <div class="modal-header">
+	      <button type="button" class="close" data-dismiss="modal">&times;</button>
+	      <h4 class="modal-title">Add Lead</h4>
+	    </div>
+	    <div class="modal-body">
+	      	<form role="form" id="lead-form">
+	      		<div class="row">
+	      			<div class="col-sm-6">
+	      				 <div class="form-group">
+			                <label for="first_name">First Name *</label>
+			                <input type="text" class="form-control" id="first_name" name="first_name" required>
+			            </div>
+	      			</div>
+	      			<div class="col-sm-6">
+	      				 <div class="form-group">
+			                <label for="last_name">Last Name *</label>
+			                <input type="text" class="form-control" id="last_name" name="last_name" required>
+			            </div>
+	      			</div>
+	      		</div>
+	      		<div class="row">
+	      			<div class="col-sm-6">
+	      				 <div class="form-group">
+			                <label for="email">Email Address *</label>
+			                <input type="email" class="form-control" id="email" name="email" required placeholder="abc@gmail.com" >
+			            </div>
+	      			</div>
+	      			<div class="col-sm-6">
+	      				 <div class="form-group">
+			                <label for="mobile">Mobile *</label>
+			                <input type="number" class="form-control" id="mobile" name="mobile" required >
+			            </div>
+	      			</div>
+	      		</div>
+	      		<div class="row">
+	      			<div class="col-sm-6">
+	      				 <div class="form-group">
+			                <label for="location_type">LOCATION TYPE</label>
+			                <select class="form-control" id="location_type" name="location_type">
+								<option selected>City</option>
+								<option>State</option>
+								<option>Country</option>
+							</select>
+			            </div>
+	      			</div>
+	      			<div class="col-sm-6">
+	      				 <div class="form-group">
+			                <label for="location_string">LOCATION STRING</label>
+			                <input type="text" class="form-control" id="location_string" name="location_string" required >
+			            </div>
+	      			</div>
+	      		</div>
+	      		<span class="req-fields hidden">*All fields are Required</span>
+	      	</form>
+	    </div>
+	    <div class="modal-footer">
+	      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	      <button type="button" class="btn btn-primary submitLeadBtn" onclick="submitLeadData()">SUBMIT</button>
+	      <div class="msg-on-submission"></div>
+	    </div>
+	  </div>
+	 </div>
+	</div>
+  	<!-- End of modal adding leads-->
+
+
+  	<!-- Modal for adding lead's communication-->
+  	<div class="modal fade" id="mark-lead-modal" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+				  <button type="button" class="close" data-dismiss="modal">&times;</button>
+				  <h4 class="modal-title">Mark Communication</h4>
+				</div>
+				<div class="modal-body">
+				  	<form role="form" id="mark-comm-form">
+						<div class="form-group">
+						  <label for="comment">Communication</label>
+						  <textarea class="form-control" rows="5" id="comment"></textarea>
+						</div>
+				  	</form>
+				</div>
+				<div class="modal-footer">
+				  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				  <button type="button" class="btn btn-primary submitBtn" onclick="markCommunicationLead()">Mark Communication</button>
+				  <div class="msg-on-submission"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+  	<!-- End of Modal for adding lead's communication-->
+
+  	<!-- Modal to delete selected lead data-->
+  	<div class="modal fade" id="delete-lead-modal" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+				  <button type="button" class="close" data-dismiss="modal">&times;</button>
+				  <h4 class="modal-title">Delete</h4>
+				</div>
+				<div class="modal-body">
+				  	<form role="form" id="del-lead-form">
+						<div class="form-group">
+						  <h4 for="comment">Are you sure to delete selected lead data?</h4>
+						  <h6>Note: This will delete all the data related to this lead.</h6>
+						  <!-- <textarea class="form-control" rows="5" id="comment"></textarea> -->
+						</div>
+				  	</form>
+				</div>
+				<div class="modal-footer">
+				  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				  <button type="button" class="btn btn-primary submitBtn" onclick="deleteSelectedLead()">OK</button>
+				  <div class="msg-on-submission"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+  	<!-- End of Modal to delete selected lead data -->
+
+
   </body>
 </html>
