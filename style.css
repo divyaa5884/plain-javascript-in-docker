@@ -1,0 +1,59 @@
+body {
+    padding: 15px;
+}
+
+table{
+	font-family: arial, sans-serif;
+	border-collapse: collapse;
+	width: 100%;
+}
+#leads-table thead {
+    background: #000;
+    color: #fff;
+    font-size: 20px;
+}
+#leads-table thead th {
+	padding: 5px 10px;
+    font-size: 15px;
+    border: 1px solid #888;
+}
+#leads-table td {
+    border: 1px solid #888;
+    padding: 10px;
+}
+
+#leads-table tr:nth-child(even) {
+  background-color: #eee;
+}
+#leads-table .no-leads {
+	font-size: 24px;
+	text-align: center;
+	border: none;
+}
+span[class^=update-icon] {
+	margin: 0 10px;
+}
+#add_leads {
+	color: #fff;
+	background: #000;
+	margin: 10px 0;
+}
+#leads-table-item span .fa{
+	cursor: pointer;
+}
+.msg-on-submission {
+	font-size: 15px;
+    padding: 8px 0;
+    color: red;
+    text-transform: capitalize;
+}
+
+span.req-fields {
+    color: red;
+    background: khaki;
+    font-weight: 600;
+    font-size: 13px;
+}
+#del-lead-form h6{
+    display: inline-block;
+}
