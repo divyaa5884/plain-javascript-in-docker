@@ -20,7 +20,7 @@ function renderDynamicContent() {
 		           '</td><td>'+res[i].location_string+
 		           '</td><td><span class="update-icon-'+i+
 		           '" onclick="getSelectedLeadId('+res[i].id+')" data-toggle="modal" data-target="#mark-lead-modal"><i class="fa fa-pencil"></i></span><span class="delete-icon-'+i+
-		           '" onclick="getSelectedLeadId('+res[i].id+')" data-toggle="modal" data-target="#delete-lead-modal"><i class="fa fa-trash fa-lg"></i></span></td></tr>'; 
+		           '" onclick="getSelectedLeadId('+res[i].id+')" data-toggle="modal" data-target="#delete_dialog"><i class="fa fa-trash fa-lg"></i></span></td></tr>'; 
 		        }
 		        $('#leads-table-item').html(trHTML);
 		    }
@@ -89,7 +89,7 @@ function submitLeadData(){
 		  	$(".msg-on-submission").html('Data Saved Successfully!');
 		  	setTimeout(function(){
 				restoreDefaultVal();
-				$('#add-lead-modal').modal('hide')
+				$('#add_dialog').modal('hide')
 			}, 800);
 		  	renderDynamicContent();
 		  },
@@ -111,18 +111,19 @@ function restoreDefaultVal() {
 	$("#lead-form .req-fields").addClass("hidden");
 }
 function deleteSelectedLead(){
+	$(".msg-on-submission").html('');
 	$.ajax({
 	    url: API_URL+'/api/leads/'+selectedLead,
 	    type: 'DELETE',
 	    success: function(res) {
-	       $("#delete-lead-modal .msg-on-submission").html('Deleted Successfully!');
+	       $("#delete_dialog .msg-on-submission").html('Deleted Successfully!');
 	       renderDynamicContent();
 	       setTimeout(function(){
-				$('#delete-lead-modal').modal('hide')
+				$('#delete_dialog').modal('hide')
 			}, 800);
     	},
     	error: function(res){
-		  	$("#delete-lead-modal .msg-on-submission").html('Some error occurred!');
+		  	$("#delete_dialog .msg-on-submission").html('Some error occurred!');
 		}
 	});
 }
@@ -130,14 +131,17 @@ function deleteSelectedLead(){
 function getSelectedLeadId(id) {
 	selectedLead = id;
 	restoreDefCommDel();
+	$(".msg-on-submission").html('');
+
 }
+// function for emptying val (upadate comm and delete lead)
 function restoreDefCommDel(){
 	// emptying previously filled msg, fields
-	$(".msg-on-submission").html('');
 	$("#mark-comm-form textarea").val('');
 	$("#mark-comm-form .form-group").removeClass('has-error');
 }
 function markCommunicationLead() {
+	$(".msg-on-submission").html('');
 	var commVal = $("#mark-comm-form textarea").val().trim();
 	if(commVal.length > 0){
 		var dataObject = { 'communication': commVal };
