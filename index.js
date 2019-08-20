@@ -3,7 +3,7 @@ var selectedLead=null;
 
 function renderDynamicContent() {
     $.ajax({
-        url: "http://localhost:8080/api/leads",
+        url: API_URL+'/api/leads/?location_string=India',
         type: 'GET',
         dataType: 'json', // added data type
         success: function(res) {
@@ -26,7 +26,6 @@ function renderDynamicContent() {
 		    }
 	    },
         error:function(res){
-        	console.log(res);
         	$('#leads-table-item').html('<tr><td class="no-leads" colspan="6">Some error occurred!</td></tr>');
         }
     });
@@ -83,7 +82,7 @@ function submitLeadData(){
 		var data = $('#lead-form').serialize();
 		$.ajax({
 		  type: "POST",
-		  url: "http://localhost:8080/api/leads/",
+		  url: API_URL+'/api/leads/',
 		  data: data,
 		  dataType: 'json',
 		  success: function(res){
@@ -95,13 +94,12 @@ function submitLeadData(){
 		  	renderDynamicContent();
 		  },
 		  error: function(res){
-		  	console.log(res);
 		  	if(res.responseJSON){
 		  		// email id already present in previous leads
 		  		$(".msg-on-submission").html(res.responseJSON["email"]);
 		  	}
 		  	else {
-		  		$(".msg-on-submission").html("Location type should be City or Country");
+		  		$(".msg-on-submission").html("Some error occurred");
 		  	}
 		  }
 		});
@@ -114,10 +112,9 @@ function restoreDefaultVal() {
 }
 function deleteSelectedLead(){
 	$.ajax({
-	    url: 'http://localhost:8080/api/leads/'+selectedLead,
+	    url: API_URL+'/api/leads/'+selectedLead,
 	    type: 'DELETE',
 	    success: function(res) {
-	       console.log("DELETED");
 	       $("#delete-lead-modal .msg-on-submission").html('Deleted Successfully!');
 	       renderDynamicContent();
 	       setTimeout(function(){
@@ -125,8 +122,6 @@ function deleteSelectedLead(){
 			}, 800);
     	},
     	error: function(res){
-		  	console.log("ERROR");
-		  	console.log(res);
 		  	$("#delete-lead-modal .msg-on-submission").html('Some error occurred!');
 		}
 	});
@@ -147,12 +142,11 @@ function markCommunicationLead() {
 	if(commVal.length > 0){
 		var dataObject = { 'communication': commVal };
 		$.ajax({
-	        url: "http://localhost:8080/api/mark_lead/"+selectedLead,
+	        url: API_URL+'/api/mark_lead/'+selectedLead,
 	        type: 'PUT',
 	        dataType: 'json',
 	        data: dataObject,
 	        success: function(res) {
-	        	console.log(res);
 	        	$("#mark-lead-modal .msg-on-submission").html("Contacted");
 	        	setTimeout(function(){
 					$('#mark-lead-modal').modal('hide')
@@ -160,7 +154,6 @@ function markCommunicationLead() {
 				restoreDefCommDel();
 		    },
 	        error:function(res){
-	        	console.log(res);
 	        	$("#mark-lead-modal .msg-on-submission").html("Unable to update");
 	        }
 	    });
